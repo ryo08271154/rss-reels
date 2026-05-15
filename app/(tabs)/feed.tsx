@@ -1,0 +1,93 @@
+import ArticleCard from "@/components/ArticleCard";
+import CategoryPicker from "@/components/CategoryPicker";
+import { SettingsContext } from "@/context/SettingsContext";
+import { getRssArticles } from "@/lib/rss";
+import { Article } from "@/types/article";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { useNavigation, useRouter } from "expo-router";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { FlatList, RefreshControl, View } from "react-native";
+
+export default function FeedScreen() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
+
+  const [refreshing, setRefreshing] = useState(false);
+  const { settings, setSettings, saveSettings, resetSettings } =
+    useContext(SettingsContext);
+
+  const router = useRouter();
+
+  const navigation = useNavigation() as BottomTabNavigationProp<any>;
+  const flatListRef = useRef<FlatList>(null);
+
+  const updateArticles = useCallback(
+    async (useCache: boolean = true, category?: string): Promise<Article[]> => {
+      const articlesData = await getRssArticles(
+        useCache,
+        settings,
+        category === "All" || category === "すべて" ? undefined : category,
+      );
+      setArticles(articlesData);
+      return articlesData;
+    },
+    [settings],
+  );
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    await updateArticles(false);
+    try {
+      flatListRef.current?.scrollToIndex({ animated: true, index: 0 });
+    } catch (e) {}
+
+    setRefreshing(false);
+  }, [updateArticles]);
+
+  useEffect(() => {
+    updateArticles();
+  }, [updateArticles]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("tabPress", (e) => {
+      if (navigation.isFocused()) {
+        try {
+          flatListRef.current?.scrollToIndex({ animated: true, index: 0 });
+        } catch (e) {}
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  // カテゴリー変更で記事を更新
+  useEffect(() => {
+    updateArticles(true, selectedCategory);
+  }, [selectedCategory, updateArticles]);
+
+  return (
+    <View>
+      <View
+        pointerEvents="box-none"
+        style={{
+          position: "absolute",
+          zIndex: 100,
+        }}
+      >
+        <CategoryPicker
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      </View>
+      <FlatList
+        data={articles}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <ArticleCard article={item} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ref={flatListRef}
+      />
+    </View>
+  );
+}

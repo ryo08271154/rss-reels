@@ -1,0 +1,34 @@
+{
+  "home": "ホーム",
+  "feed": "フィード",
+  "settings": "設定",
+
+  "add": "追加",
+  "remove": "削除",
+  "enterValue": "値を入力",
+  "noUrls": "まだ URL が追加されていません。",
+  "invalidUrl": "無効な URL です。",
+  "languageSettings": "言語設定",
+  "resetSettings": "設定をリセット",
+  "openSourceLicenses": "オープンソースライセンス",
+
+  "settingRssName": "RSSのURL",
+  "settingRssDescription": "購読したいRSSフィードのURLを入力してください。",
+  "version": "バージョン",
+
+  "hintSource": "ヒント",
+
+  "hint1Title": "使い方",
+  "hint1Description": "RSS Reelsは、あなたの購読しているRSSフィードから最新の記事をリール形式で表示するアプリです。記事をタップすると、元のウェブサイトで全文を読むことができます。設定タブでRSSフィードのURLを追加して、あなたの好みに合わせてカスタマイズしてください。",
+  "hint1Summary": "RSS Reelsへようこそ！このアプリは、RSSフィードを短く魅力的なリール形式で表示します。設定タブでRSSフィードのURLを追加してください。",
+
+  "hint2Title": "フィードタブ",
+  "hint2Description": "フィードタブでは、追加したRSSフィードの最新記事を一覧で確認できます。",
+  "hint2Summary": "フィードタブでは、追加したRSSフィードの最新記事を一覧で確認できます。各記事をタップすると、詳細が表示されます。",
+
+  "hint3Title": "設定タブ",
+  "hint3Description": "設定タブでは、RSSフィードのURLの追加や削除、その他の設定を行うことができます。",
+  "hint3Summary": "設定タブでは、RSSフィードのURLの追加や削除、その他の設定を行うことができます。アプリのバージョン情報もここで確認できます。",
+
+  "all": "すべて"
+}

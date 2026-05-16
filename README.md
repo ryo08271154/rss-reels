@@ -1,50 +1,35 @@
-# Welcome to your Expo app 👋
+# RSSReels
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+RSSReelsは、ExpoとReact Nativeを使って作成されたRSSリーダーアプリです。
 
-## Get started
+## 概要
 
-1. Install dependencies
+- RSS/Atomフィードを読み込み、記事をカード表示します。
+- タブナビゲーションで「ホーム(Reels表示)」「フィード(一覧表示)」「設定」を切り替え可能。
+- 好きなRSSフィードURLを追加・管理できます。
+- カテゴリーピッカーで記事を絞り込みできます。
+- 画像付き記事をリール形式で閲覧できます。
+- 日本語/英語のローカライズ対応。
 
-   ```bash
-   npm install
-   ```
+## 主な機能
 
-2. Start the app
+- `Home`タブ
+  - フルスクリーンのReelカード形式で記事を表示
+  - 画面を上下にスワイプして記事を切り替え
+  - 記事タップでブラウザが開き、元記事を閲覧できます。
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+- `Feed`タブ
+  - RSS記事を一覧表示
+  - プルダウンで最新記事を再読み込み
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 使い方
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. `Settings`タブでRSSフィードURLを追加します。
+2. `Home`または`Feed`タブで記事を取得します。
+3. カテゴリーピッカーから記事を絞り込みできます。
+4. 記事をタップすると既定のブラウザで詳細を確認できます。

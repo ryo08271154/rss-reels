@@ -32,5 +32,17 @@
   "hint3Description": "In the Settings tab, you can add or remove RSS feed URLs and configure other settings.",
   "hint3Summary": "In the Settings tab, you can add or remove RSS feed URLs and configure other settings. You can also check the app version information here.",
 
-  "all": "All"
+  "all": "All",
+
+  "autoScroll": "Auto Scroll",
+  "autoScrollHint": "The reels will automatically scroll every 5 seconds. Long press on an article to open the settings.",
+
+  "yes": "Yes",
+  "no": "No",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "error": "Error",
+  "success": "Success",
+  "warning": "Warning",
+  "info": "Info"
 }

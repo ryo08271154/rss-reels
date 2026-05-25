@@ -23,12 +23,22 @@ const styles = StyleSheet.create({
 type Props = {
   article: Article;
   height: number;
+  modalVisible: boolean;
+  setModalVisible: (visible: boolean) => void;
 };
-export default function ReelCard({ article, height }: Props) {
+export default function ReelCard({
+  article,
+  height,
+  modalVisible,
+  setModalVisible,
+}: Props) {
   const c = useContext(ThemeContext);
 
   return (
-    <Pressable onPress={() => openBrowserAsync(article.url)}>
+    <Pressable
+      onPress={() => openBrowserAsync(article.url)}
+      onLongPress={() => setModalVisible(true)}
+    >
       <View style={[{ height }]}>
         <ImageBackground
           source={article.imageUrl}

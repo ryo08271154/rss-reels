@@ -1,11 +1,13 @@
 import { SettingsContext } from "@/context/SettingsContext";
 import { ThemeContext } from "@/context/ThemeContext";
+import { reloadAppAsync } from "expo";
 import Constants from "expo-constants";
 import { openBrowserAsync } from "expo-web-browser";
 import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Alert,
+  AppState,
   Button,
   Linking,
   ScrollView,
@@ -138,10 +140,19 @@ export default function SettingsScreen() {
       <Button
         title={t("languageSettings")}
         onPress={() => {
+          // 設定画面から戻ってきたら再読み込みして言語を反映する
+          const sub = AppState.addEventListener("change", (state) => {
+            if (state === "active") {
+              sub.remove();
+              reloadAppAsync();
+            }
+          });
+
           Alert.alert(
             "Open Settings",
             "Please open the app settings to change language.",
           );
+
           try {
             Linking.openSettings();
           } catch (e) {

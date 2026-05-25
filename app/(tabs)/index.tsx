@@ -135,6 +135,9 @@ export default function HomeScreen() {
         data={articles}
         keyExtractor={(item) => item.id}
         pagingEnabled
+        snapToInterval={height}
+        snapToAlignment="start"
+        disableIntervalMomentum
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"
         renderItem={({ item }) => <ReelCard article={item} height={height} />}

@@ -129,14 +129,16 @@ export default function HomeScreen() {
     setModalVisible(false);
     Alert.alert(t("autoScroll"), t("autoScrollHint"));
     const interval = setInterval(() => {
-      flatListRef.current?.scrollToIndex({
-        animated: true,
-        index: indexRef.current + 1,
-      });
+      if (indexRef.current < articles.length - 1) {
+        flatListRef.current?.scrollToIndex({
+          animated: true,
+          index: indexRef.current + 1,
+        });
+      }
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [t, autoScroll]);
+  }, [t, autoScroll, articles.length]);
 
   return (
     <View
@@ -171,6 +173,11 @@ export default function HomeScreen() {
         keyExtractor={(item) => item.id}
         pagingEnabled
         snapToInterval={height}
+        getItemLayout={(_, index) => ({
+          length: height,
+          offset: height * index,
+          index,
+        })}
         snapToAlignment="start"
         disableIntervalMomentum
         showsVerticalScrollIndicator={false}
@@ -189,7 +196,8 @@ export default function HomeScreen() {
         ref={flatListRef}
         onMomentumScrollEnd={(e) => {
           // スクロール位置から現在のインデックスを計算
-          indexRef.current = Math.round(e.nativeEvent.contentOffset.y / height);
+          indexRef.current =
+            height > 0 ? Math.round(e.nativeEvent.contentOffset.y / height) : 0;
         }}
       />
       <Modal

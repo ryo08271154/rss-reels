@@ -4,16 +4,26 @@ import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
 import { Article } from "@/types/article";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { Stack, useNavigation, useRouter } from "expo-router";
+import { Stack, Tabs, useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, RefreshControl, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  Modal,
+  Pressable,
+  RefreshControl,
+  Switch,
+  Text,
+  View,
+} from "react-native";
 const appIcon = require("@/assets/images/icon.png");
 
 export default function HomeScreen() {
   const [height, setHeight] = useState(0);
   const { t } = useTranslation();
 
+  const indexRef = useRef(0);
   const [articles, setArticles] = useState<Article[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
 
@@ -24,6 +34,9 @@ export default function HomeScreen() {
   const router = useRouter();
   const navigation = useNavigation() as BottomTabNavigationProp<any>;
   const flatListRef = useRef<FlatList>(null);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [autoScroll, setAutoScroll] = useState(false);
 
   const updateArticles = useCallback(
     async (useCache: boolean = true, category?: string): Promise<Article[]> => {
@@ -110,12 +123,36 @@ export default function HomeScreen() {
     updateArticles(true, selectedCategory);
   }, [selectedCategory, updateArticles]);
 
+  // 自動スクロール
+  useEffect(() => {
+    if (!autoScroll) return;
+    setModalVisible(false);
+    Alert.alert(t("autoScroll"), t("autoScrollHint"));
+    const interval = setInterval(() => {
+      if (indexRef.current < articles.length - 1) {
+        flatListRef.current?.scrollToIndex({
+          animated: true,
+          index: indexRef.current + 1,
+        });
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [t, autoScroll, articles.length]);
+
   return (
     <View
       style={{ flex: 1 }}
       onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
     >
+      {autoScroll ? (
+        <Tabs.Screen options={{ tabBarStyle: { display: "none" } }} />
+      ) : (
+        <Tabs.Screen options={{ tabBarStyle: { display: "flex" } }} />
+      )}
+
       <Stack.Screen options={{ headerShown: false }} />
+
       <View
         pointerEvents="box-none"
         style={{
@@ -135,14 +172,64 @@ export default function HomeScreen() {
         data={articles}
         keyExtractor={(item) => item.id}
         pagingEnabled
+        snapToInterval={height}
+        getItemLayout={(_, index) => ({
+          length: height,
+          offset: height * index,
+          index,
+        })}
+        snapToAlignment="start"
+        disableIntervalMomentum
         showsVerticalScrollIndicator={false}
         decelerationRate="fast"
-        renderItem={({ item }) => <ReelCard article={item} height={height} />}
+        renderItem={({ item }) => (
+          <ReelCard
+            article={item}
+            height={height}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        )}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         ref={flatListRef}
+        onMomentumScrollEnd={(e) => {
+          // スクロール位置から現在のインデックスを計算
+          indexRef.current =
+            height > 0 ? Math.round(e.nativeEvent.contentOffset.y / height) : 0;
+        }}
       />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <Pressable
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0,0,0,0.1)",
+          }}
+          onPress={() => setModalVisible(false)}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 24,
+              marginBottom: 50,
+              borderRadius: 10,
+            }}
+          >
+            <Text>{t("autoScroll")}</Text>
+            <Switch value={autoScroll} onValueChange={setAutoScroll} />
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 }

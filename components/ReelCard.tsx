@@ -2,7 +2,8 @@ import { ThemeContext } from "@/context/ThemeContext";
 import { Article } from "@/types/article";
 import { ImageBackground } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { openBrowserAsync } from "expo-web-browser";
+import { useRouter } from "expo-router";
+
 import { useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   gradient: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
   source: { fontSize: 14, marginBottom: 8 },
   title: { fontSize: 30, fontWeight: "bold", marginBottom: 12 },
@@ -23,12 +24,24 @@ const styles = StyleSheet.create({
 type Props = {
   article: Article;
   height: number;
+  modalVisible: boolean;
+  setModalVisible: (visible: boolean) => void;
 };
-export default function ReelCard({ article, height }: Props) {
+export default function ReelCard({
+  article,
+  height,
+  modalVisible,
+  setModalVisible,
+}: Props) {
   const c = useContext(ThemeContext);
-
+  const router = useRouter();
   return (
-    <Pressable onPress={() => openBrowserAsync(article.url)}>
+    <Pressable
+      onPress={() =>
+        router.push(`/reader?url=${encodeURIComponent(article.url)}`)
+      }
+      onLongPress={() => setModalVisible(true)}
+    >
       <View style={[{ height }]}>
         <ImageBackground
           source={article.imageUrl}

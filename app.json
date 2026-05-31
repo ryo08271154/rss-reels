@@ -2,14 +2,18 @@
   "expo": {
     "name": "RSSReels",
     "slug": "rss-reels",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "rssreels",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ryo08271154.rssreels",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -39,8 +43,16 @@
           }
         }
       ],
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "ja"],
+            "android": ["en", "ja"]
+          }
+        }
+      ],
       "expo-web-browser",
-      "expo-localization",
       "react-native-legal"
     ],
     "experiments": {
@@ -52,6 +64,10 @@
       "eas": {
         "projectId": "62b50607-5d35-471b-b437-5bf40372e2ae"
       }
+    },
+    "locales": {
+      "en": "./locales/en.json",
+      "ja": "./locales/ja.json"
     }
   }
 }

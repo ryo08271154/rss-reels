@@ -1,4 +1,6 @@
 {
+  "CFBundleDisplayName": "RSSReels",
+
   "home": "ホーム",
   "feed": "フィード",
   "settings": "設定",
@@ -14,6 +16,8 @@
 
   "settingRssName": "RSSのURL",
   "settingRssDescription": "購読したいRSSフィードのURLを入力してください。",
+  "settingReaderModeName": "リーダーモード",
+  "settingReaderModeDescription": "リーダーモードを有効にすると、記事の内容がより読みやすくなります。",
   "version": "バージョン",
 
   "hintSource": "ヒント",
@@ -30,5 +34,20 @@
   "hint3Description": "設定タブでは、RSSフィードのURLの追加や削除、その他の設定を行うことができます。",
   "hint3Summary": "設定タブでは、RSSフィードのURLの追加や削除、その他の設定を行うことができます。アプリのバージョン情報もここで確認できます。",
 
-  "all": "すべて"
+  "all": "すべて",
+
+  "autoScroll": "自動スクロール",
+  "autoScrollHint": "リールは5秒ごとに自動でスクロールします。記事を長押しすると設定が開きます。",
+
+  "yes": "はい",
+  "no": "いいえ",
+  "cancel": "キャンセル",
+  "ok": "OK",
+  "error": "エラー",
+  "success": "成功",
+  "warning": "警告",
+  "info": "情報",
+
+  "externalLink.title": "外部リンク",
+  "externalLink.message": "{{hostname}}を開きますか？"
 }

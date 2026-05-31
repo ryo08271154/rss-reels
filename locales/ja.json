@@ -16,6 +16,8 @@
 
   "settingRssName": "RSSのURL",
   "settingRssDescription": "購読したいRSSフィードのURLを入力してください。",
+  "settingReaderModeName": "リーダーモード",
+  "settingReaderModeDescription": "リーダーモードを有効にすると、記事の内容がより読みやすくなります。",
   "version": "バージョン",
 
   "hintSource": "ヒント",
@@ -44,5 +46,8 @@
   "error": "エラー",
   "success": "成功",
   "warning": "警告",
-  "info": "情報"
+  "info": "情報",
+
+  "externalLink.title": "外部リンク",
+  "externalLink.message": "{{hostname}}を開きますか？"
 }

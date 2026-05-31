@@ -3,7 +3,6 @@ import CategoryPicker from "@/components/CategoryPicker";
 import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
 import { Article } from "@/types/article";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
@@ -18,7 +17,7 @@ export default function FeedScreen() {
 
   const router = useRouter();
 
-  const navigation = useNavigation() as BottomTabNavigationProp<any>;
+  const navigation = useNavigation<any>();
   const flatListRef = useRef<FlatList>(null);
 
   const updateArticles = useCallback(
@@ -46,11 +45,12 @@ export default function FeedScreen() {
   }, [updateArticles]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     updateArticles();
   }, [updateArticles]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("tabPress", (e) => {
+    const unsubscribe = navigation.addListener("tabPress", (e: any) => {
       if (navigation.isFocused()) {
         try {
           flatListRef.current?.scrollToIndex({ animated: true, index: 0 });
@@ -62,6 +62,7 @@ export default function FeedScreen() {
 
   // カテゴリー変更で記事を更新
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     updateArticles(true, selectedCategory);
   }, [selectedCategory, updateArticles]);
 

@@ -16,6 +16,8 @@
 
   "settingRssName": "RSS URL",
   "settingRssDescription": "Enter the URL of the RSS feed you want to subscribe to.",
+  "settingReaderModeName": "Reader Mode",
+  "settingReaderModeDescription": "Enable reader mode to make article content more readable.",
   "version": "Version",
 
   "hintSource": "Tips",
@@ -44,5 +46,8 @@
   "error": "Error",
   "success": "Success",
   "warning": "Warning",
-  "info": "Info"
+  "info": "Info",
+
+  "externalLink.title": "External Link",
+  "externalLink.message": "Open {{hostname}}?"
 }

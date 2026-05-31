@@ -1,7 +1,7 @@
 import { ThemeContext } from "@/context/ThemeContext";
 import { Article as ArticleType } from "@/types/article";
 import { Image } from "expo-image";
-import { openBrowserAsync } from "expo-web-browser";
+import { useRouter } from "expo-router";
 import { useContext } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 type Props = {
@@ -11,13 +11,14 @@ type Props = {
 
 export default function ArticleCard({ article, onPress }: Props) {
   const c = useContext(ThemeContext);
+  const router = useRouter();
 
   async function handlePress() {
     if (onPress) {
       onPress();
       return;
     }
-    await openBrowserAsync(article.url);
+    router.push(`/reader?url=${encodeURIComponent(article.url)}`);
   }
 
   return (

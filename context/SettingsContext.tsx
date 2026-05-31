@@ -40,6 +40,13 @@ export const SettingsProvider: FC<{ children: ReactNode }> = ({
       value: [],
     },
     {
+      name: t("settingReaderModeName"),
+      description: t("settingReaderModeDescription"),
+      type: "switch",
+      key: "readerMode",
+      value: false,
+    },
+    {
       name: t("version"),
       type: "info",
       key: "version",

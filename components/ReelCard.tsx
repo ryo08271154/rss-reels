@@ -37,7 +37,9 @@ export default function ReelCard({
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.push(`/reader?url=${article.url}`)}
+      onPress={() =>
+        router.push(`/reader?url=${encodeURIComponent(article.url)}`)
+      }
       onLongPress={() => setModalVisible(true)}
     >
       <View style={[{ height }]}>

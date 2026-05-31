@@ -18,7 +18,7 @@ export default function ArticleCard({ article, onPress }: Props) {
       onPress();
       return;
     }
-    router.push(`/reader?url=${article.url}`);
+    router.push(`/reader?url=${encodeURIComponent(article.url)}`);
   }
 
   return (

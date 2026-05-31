@@ -15,6 +15,10 @@ export default function ReaderScreen() {
     useContext(SettingsContext);
 
   useEffect(() => {
+    if (!url) {
+      router.back();
+      return;
+    }
     if (!settings.find((item) => item.key === "readerMode")?.value) {
       openBrowserAsync(url);
       router.back();
@@ -60,26 +64,31 @@ export default function ReaderScreen() {
       `}
         onNavigationStateChange={handleNavigationStateChange}
         onShouldStartLoadWithRequest={(request) => {
-          const hostname = new URL(request.url).hostname;
-          const articleHostname = new URL(url).hostname;
+          if (!url) return false;
+          try {
+            const hostname = new URL(request.url).hostname;
+            const articleHostname = new URL(url).hostname;
 
-          if (hostname !== articleHostname) {
-            Alert.alert(
-              t("externalLink.title"),
-              t("externalLink.message", { hostname }),
-              [
-                {
-                  text: t("cancel"),
-                  style: "cancel",
-                },
-                {
-                  text: t("ok"),
-                  onPress: () => {
-                    openBrowserAsync(request.url);
+            if (hostname !== articleHostname) {
+              Alert.alert(
+                t("externalLink.title"),
+                t("externalLink.message", { hostname }),
+                [
+                  {
+                    text: t("cancel"),
+                    style: "cancel",
                   },
-                },
-              ],
-            );
+                  {
+                    text: t("ok"),
+                    onPress: () => {
+                      openBrowserAsync(request.url);
+                    },
+                  },
+                ],
+              );
+              return false;
+            }
+          } catch (error) {
             return false;
           }
           return true;

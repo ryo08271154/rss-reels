@@ -3,7 +3,6 @@ import ReelCard from "@/components/ReelCard";
 import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
 import { Article } from "@/types/article";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { Stack, Tabs, useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,7 +31,7 @@ export default function HomeScreen() {
     useContext(SettingsContext);
 
   const router = useRouter();
-  const navigation = useNavigation() as BottomTabNavigationProp<any>;
+  const navigation = useNavigation<any>();
   const flatListRef = useRef<FlatList>(null);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -105,12 +104,13 @@ export default function HomeScreen() {
 
   // 初回読み込み
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onRefresh();
   }, [onRefresh]);
 
   // ホームタブで再読み込み
   useEffect(() => {
-    const unsubscribe = navigation.addListener("tabPress", (e) => {
+    const unsubscribe = navigation.addListener("tabPress", (e: any) => {
       if (navigation.isFocused()) {
         onRefresh();
       }
@@ -120,13 +120,14 @@ export default function HomeScreen() {
 
   // カテゴリー変更で記事を更新
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     updateArticles(true, selectedCategory);
   }, [selectedCategory, updateArticles]);
 
   // 自動スクロール
   useEffect(() => {
     if (!autoScroll) return;
-    setModalVisible(false);
+
     Alert.alert(t("autoScroll"), t("autoScrollHint"));
     const interval = setInterval(() => {
       if (indexRef.current < articles.length - 1) {

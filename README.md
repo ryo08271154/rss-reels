@@ -1,6 +1,6 @@
-# RSSReels
+# RSS Reels
 
-RSSReelsは、ExpoとReact Nativeを使って作成されたRSSリーダーアプリです。
+RSS Reelsは、ExpoとReact Nativeを使って作成されたRSSリーダーアプリです。
 
 ## ダウンロード
 

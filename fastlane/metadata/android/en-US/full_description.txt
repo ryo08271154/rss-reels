@@ -1,4 +1,4 @@
-RSSReels lets you add and manage your favorite RSS feeds, then browse articles in a stylish reel layout or a traditional feed list.
+RSS Reels lets you add and manage your favorite RSS feeds, then browse articles in a stylish reel layout or a traditional feed list.
 
 - Add any RSS feed URL
 - Home screen shows full-screen article reels

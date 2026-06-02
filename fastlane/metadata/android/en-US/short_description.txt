@@ -1,0 +1,1 @@
+A sleek RSS reader that shows your feeds in reel-style and list view

@@ -21,6 +21,7 @@
       },
       "predictiveBackGestureEnabled": true,
       "package": "com.ryo08271154.rssreels",
+      "versionCode": 4,
       "blockedPermissions": ["android.permission.SYSTEM_ALERT_WINDOW"]
     },
     "web": {

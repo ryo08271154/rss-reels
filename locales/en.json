@@ -1,10 +1,15 @@
 {
   "home": "Home",
   "feed": "Feed",
+  "saved": "Saved",
   "settings": "Settings",
 
   "add": "Add",
   "remove": "Remove",
+  "articleSaved": "Article has been saved to your list.",
+  "articleRemoved": "Article has been removed from your list.",
+  "noSavedArticlesTitle": "No saved articles yet.",
+  "noSavedArticlesDescription": "Long press an article in the feed or double tap an article in the reel to save it to your list.",
   "enterValue": "Enter a value",
   "noUrls": "No URLs added yet.",
   "invalidUrl": "Invalid URL.",

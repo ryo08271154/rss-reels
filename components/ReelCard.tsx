@@ -1,3 +1,4 @@
+import { SavedArticleIdsContext } from "@/context/SavedArticleIdsContext";
 import { ThemeContext } from "@/context/ThemeContext";
 import { Article } from "@/types/article";
 import { ImageBackground } from "expo-image";
@@ -5,8 +6,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
 import { useContext } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
+import { useTranslation } from "react-i18next";
+import { StyleSheet, Text, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 const styles = StyleSheet.create({
   card: {
     justifyContent: "flex-end",
@@ -35,13 +38,50 @@ export default function ReelCard({
 }: Props) {
   const c = useContext(ThemeContext);
   const router = useRouter();
-  return (
-    <Pressable
-      onPress={() =>
-        router.push(`/reader?url=${encodeURIComponent(article.url)}`)
+  const { t } = useTranslation();
+  const { toggleSavedArticleId } = useContext(SavedArticleIdsContext);
+
+  const singleTap = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(1)
+    .onEnd(() => {
+      router.push(`/reader?url=${encodeURIComponent(article.url)}`);
+    });
+
+  const doubleTap = Gesture.Tap()
+    .runOnJS(true)
+    .numberOfTaps(2)
+    .onEnd(async () => {
+      const isSaved = await toggleSavedArticleId(article);
+      if (isSaved) {
+        Toast.show({
+          type: "success",
+          text1: t("add"),
+          text2: t("articleSaved"),
+          position: "bottom",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: t("remove"),
+          text2: t("articleRemoved"),
+          position: "bottom",
+        });
       }
-      onLongPress={() => setModalVisible(true)}
-    >
+    });
+
+  const longPress = Gesture.LongPress()
+    .runOnJS(true)
+    .maxDistance(400)
+    .onEnd(() => {
+      setModalVisible(true);
+    });
+
+  // 優先順位
+  const composed = Gesture.Exclusive(longPress, doubleTap, singleTap);
+
+  return (
+    <GestureDetector gesture={composed}>
       <View style={[{ height }]}>
         <ImageBackground
           source={article.imageUrl}
@@ -70,6 +110,6 @@ export default function ReelCard({
           </Text>
         </ImageBackground>
       </View>
-    </Pressable>
+    </GestureDetector>
   );
 }

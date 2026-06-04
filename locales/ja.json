@@ -1,10 +1,15 @@
 {
   "home": "ホーム",
   "feed": "フィード",
+  "saved": "保存",
   "settings": "設定",
 
   "add": "追加",
   "remove": "削除",
+  "articleSaved": "記事がリストに保存されました。",
+  "articleRemoved": "記事がリストから削除されました。",
+  "noSavedArticlesTitle": "保存された記事はありません。",
+  "noSavedArticlesDescription": "フィードでは記事を長押し、リールでは記事をダブルタップすると保存できます。",
   "enterValue": "値を入力",
   "noUrls": "まだ URL が追加されていません。",
   "invalidUrl": "無効な URL です。",

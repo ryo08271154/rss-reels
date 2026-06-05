@@ -42,6 +42,12 @@
   "autoScroll": "Auto Scroll",
   "autoScrollHint": "The reels will automatically scroll every 5 seconds. Long press on an article to open the settings.",
 
+  "noNewArticlesTitle": "No new articles",
+  "noNewArticlesMessage": "There are no new articles, so we are showing already viewed articles.",
+  "allArticlesDisplayedTitle": "All articles are displayed",
+  "allArticlesDisplayedDescription": "All articles are displayed. Please wait until new articles are added.",
+  "allArticlesDisplayedSummary": "Please wait until new articles are added.",
+
   "yes": "Yes",
   "no": "No",
   "cancel": "Cancel",

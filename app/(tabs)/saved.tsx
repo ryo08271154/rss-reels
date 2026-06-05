@@ -11,7 +11,9 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 export default function SavedScreen() {
   const { settings, setSettings, saveSettings, resetSettings } =
     useContext(SettingsContext);
-  const { savedArticleIds } = useContext(SavedArticleIdsContext);
+  const { savedArticleIds, toggleSavedArticleId } = useContext(
+    SavedArticleIdsContext,
+  );
   const theme = useContext(ThemeContext);
   const { t } = useTranslation();
   const [savedArticles, setSavedArticles] = useState<Article[]>([]);
@@ -26,11 +28,14 @@ export default function SavedScreen() {
 
         if (article?.id) {
           articles.push(article);
+        } else {
+          // 記事が取得できない場合は削除
+          await toggleSavedArticleId(articleId);
         }
       }
       setSavedArticles(articles);
     })();
-  }, [savedArticleIds, settings]);
+  }, [savedArticleIds, settings, toggleSavedArticleId]);
 
   return (
     <FlatList

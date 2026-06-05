@@ -26,7 +26,7 @@ export default function ArticleCard({ article, onPress }: Props) {
     router.push(`/reader?url=${encodeURIComponent(article.url)}`);
   }
   async function handleLongPress() {
-    const isSaved = await toggleSavedArticleId(article);
+    const isSaved = await toggleSavedArticleId(article.id);
     if (isSaved) {
       Toast.show({
         type: "success",

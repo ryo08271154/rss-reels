@@ -52,7 +52,7 @@ export default function ReelCard({
     .runOnJS(true)
     .numberOfTaps(2)
     .onEnd(async () => {
-      const isSaved = await toggleSavedArticleId(article);
+      const isSaved = await toggleSavedArticleId(article.id);
       if (isSaved) {
         Toast.show({
           type: "success",
@@ -73,7 +73,7 @@ export default function ReelCard({
   const longPress = Gesture.LongPress()
     .runOnJS(true)
     .maxDistance(400)
-    .onEnd(() => {
+    .onStart(() => {
       setModalVisible(true);
     });
 

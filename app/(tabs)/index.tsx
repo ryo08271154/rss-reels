@@ -2,6 +2,7 @@ import CategoryPicker from "@/components/CategoryPicker";
 import ReelCard from "@/components/ReelCard";
 import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
+import { addViewedArticleId, getViewedArticleIds } from "@/lib/viewedArticles";
 import { Article } from "@/types/article";
 import { Stack, Tabs, useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -16,6 +17,7 @@ import {
   Text,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 const appIcon = require("@/assets/images/icon.png");
 
 export default function HomeScreen() {
@@ -77,7 +79,20 @@ export default function HomeScreen() {
         settings,
         category === "All" || category === "すべて" ? undefined : category,
       );
-      setArticles(articlesData);
+
+      const viewedArticleIds = await getViewedArticleIds();
+
+      // 表示された記事を除外
+      const unseenArticles = articlesData.filter(
+        (article) => !viewedArticleIds.includes(article.id),
+      );
+
+      // スクロールせずにもう表示されてるので表示済みに追加
+      if (unseenArticles.length > 0) {
+        addViewedArticleId(unseenArticles[0].id);
+      }
+
+      setArticles(unseenArticles);
 
       // 一番上にスクロール
       try {
@@ -89,6 +104,32 @@ export default function HomeScreen() {
       if (articlesData.length === 0) {
         setArticles(hintArticles);
       }
+
+      if (unseenArticles.length === 0 && articlesData.length > 0) {
+        Toast.show({
+          type: "info",
+          text1: t("noNewArticlesTitle"),
+          text2: t("noNewArticlesMessage"),
+          position: "bottom",
+        });
+
+        setArticles(articlesData);
+      }
+
+      // 最後までスクロールしたときのための記事を追加
+      setArticles((prev) => [
+        ...prev,
+        {
+          id: "1",
+          title: t("allArticlesDisplayedTitle"),
+          description: t("allArticlesDisplayedDescription"),
+          imageUrl: appIcon,
+          url: "",
+          pubDate: new Date().toISOString(),
+          summary: t("allArticlesDisplayedSummary"),
+          source: t("hintSource"),
+        },
+      ]);
       return articlesData;
     },
     [settings, t],
@@ -199,6 +240,13 @@ export default function HomeScreen() {
           // スクロール位置から現在のインデックスを計算
           indexRef.current =
             height > 0 ? Math.round(e.nativeEvent.contentOffset.y / height) : 0;
+
+          // 表示済みに追加
+          const article = articles[indexRef.current];
+
+          if (!article) return;
+
+          addViewedArticleId(article.id);
         }}
       />
       <Modal

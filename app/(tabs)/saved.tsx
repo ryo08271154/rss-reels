@@ -2,7 +2,7 @@ import ArticleCard from "@/components/ArticleCard";
 import { SavedArticleIdsContext } from "@/context/SavedArticleIdsContext";
 import { SettingsContext } from "@/context/SettingsContext";
 import { ThemeContext } from "@/context/ThemeContext";
-import { getArticleById } from "@/lib/rss";
+import { getRssArticles } from "@/lib/rss";
 import { Article } from "@/types/article";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,10 +21,11 @@ export default function SavedScreen() {
   // 保存した記事IDから記事の詳細を読み込む
   useEffect(() => {
     (async () => {
+      const allArticles = await getRssArticles(true, settings);
       const articles: Article[] = [];
 
       for (const articleId of savedArticleIds) {
-        const article = await getArticleById(settings, articleId);
+        const article = allArticles.find((article) => article.id === articleId);
 
         if (article?.id) {
           articles.push(article);

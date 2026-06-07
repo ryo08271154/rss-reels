@@ -157,6 +157,14 @@ export async function getRssArticles(
   return shuffle(articles);
 }
 
+export async function getArticleById(
+  settings: SettingItem[],
+  id: string,
+): Promise<Article | undefined> {
+  const articles = await getRssArticles(true, settings);
+  return articles.find((article) => article.id === id);
+}
+
 export function getCategories(articles: Article[]): string[] {
   const categories: string[] = [];
   const excludedWords = [

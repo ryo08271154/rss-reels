@@ -120,7 +120,7 @@ export default function HomeScreen() {
       setArticles((prev) => [
         ...prev,
         {
-          id: "1",
+          id: "0",
           title: t("allArticlesDisplayedTitle"),
           description: t("allArticlesDisplayedDescription"),
           imageUrl: appIcon,

@@ -1,5 +1,5 @@
 {
-  "name": "rss-reels",
+  "name": "rss-scroll",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {

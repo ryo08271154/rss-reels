@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "RSS Reels",
-    "slug": "rss-reels",
+    "name": "RSS Scroll",
+    "slug": "rss-scroll",
     "version": "0.3.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
-    "scheme": "rssreels",
+    "scheme": "rssscroll",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,

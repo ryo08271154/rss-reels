@@ -2,12 +2,14 @@ import CategoryPicker from "@/components/CategoryPicker";
 import ReelCard from "@/components/ReelCard";
 import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
+import { addViewedArticleId, getViewedArticleIds } from "@/lib/viewedArticles";
 import { Article } from "@/types/article";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { Stack, Tabs, useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert,
   FlatList,
   Modal,
   Pressable,
@@ -16,6 +18,7 @@ import {
   Text,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 const appIcon = require("@/assets/images/icon.png");
 
 export default function HomeScreen() {
@@ -24,7 +27,7 @@ export default function HomeScreen() {
 
   const indexRef = useRef(0);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
+  const [selectedCategory, setSelectedCategory] = useState<string>(t("all"));
 
   const [refreshing, setRefreshing] = useState(false);
   const { settings, setSettings, saveSettings, resetSettings } =
@@ -45,7 +48,7 @@ export default function HomeScreen() {
           title: t("hint1Title"),
           description: t("hint1Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint1Summary"),
           source: t("hintSource"),
@@ -55,7 +58,7 @@ export default function HomeScreen() {
           title: t("hint2Title"),
           description: t("hint2Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint2Summary"),
           source: t("hintSource"),
@@ -65,7 +68,7 @@ export default function HomeScreen() {
           title: t("hint3Title"),
           description: t("hint3Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint3Summary"),
           source: t("hintSource"),
@@ -77,7 +80,20 @@ export default function HomeScreen() {
         settings,
         category === "All" || category === "すべて" ? undefined : category,
       );
-      setArticles(articlesData);
+
+      const viewedArticleIds = await getViewedArticleIds();
+
+      // 表示された記事を除外
+      const unseenArticles = articlesData.filter(
+        (article) => !viewedArticleIds.includes(article.id),
+      );
+
+      // スクロールせずにもう表示されてるので表示済みに追加
+      if (unseenArticles.length > 0) {
+        addViewedArticleId(unseenArticles[0].id);
+      }
+
+      setArticles(unseenArticles);
 
       // 一番上にスクロール
       try {
@@ -89,6 +105,32 @@ export default function HomeScreen() {
       if (articlesData.length === 0) {
         setArticles(hintArticles);
       }
+
+      if (unseenArticles.length === 0 && articlesData.length > 0) {
+        Toast.show({
+          type: "info",
+          text1: t("noNewArticlesTitle"),
+          text2: t("noNewArticlesMessage"),
+          position: "bottom",
+        });
+
+        setArticles(articlesData);
+      }
+
+      // 最後までスクロールしたときのための記事を追加
+      setArticles((prev) => [
+        ...prev,
+        {
+          id: "0",
+          title: t("allArticlesDisplayedTitle"),
+          description: t("allArticlesDisplayedDescription"),
+          imageUrl: appIcon,
+          url: "",
+          pubDate: new Date().toISOString(),
+          summary: t("allArticlesDisplayedSummary"),
+          source: t("hintSource"),
+        },
+      ]);
       return articlesData;
     },
     [settings, t],
@@ -106,6 +148,12 @@ export default function HomeScreen() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     onRefresh();
+    (async () => {
+      const savedAutoScroll = await AsyncStorage.getItem("autoScroll");
+      if (savedAutoScroll !== null) {
+        setAutoScroll(JSON.parse(savedAutoScroll));
+      }
+    })();
   }, [onRefresh]);
 
   // ホームタブで再読み込み
@@ -126,20 +174,40 @@ export default function HomeScreen() {
 
   // 自動スクロール
   useEffect(() => {
-    if (!autoScroll) return;
+    if (!autoScroll) {
+      deactivateKeepAwake();
+      return;
+    }
 
-    Alert.alert(t("autoScroll"), t("autoScrollHint"));
+    Toast.show({
+      type: "info",
+      text1: t("autoScroll"),
+      text2: t("autoScrollHint"),
+      position: "bottom",
+    });
+
+    activateKeepAwakeAsync();
     const interval = setInterval(() => {
       if (indexRef.current < articles.length - 1) {
         flatListRef.current?.scrollToIndex({
           animated: true,
           index: indexRef.current + 1,
         });
+      } else {
+        onRefresh();
       }
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [t, autoScroll, articles.length]);
+    return () => {
+      clearInterval(interval);
+      deactivateKeepAwake();
+    };
+  }, [t, autoScroll, articles.length, onRefresh]);
+
+  // 自動スクロールの状態を保存
+  useEffect(() => {
+    AsyncStorage.setItem("autoScroll", JSON.stringify(autoScroll));
+  }, [autoScroll]);
 
   return (
     <View
@@ -199,6 +267,13 @@ export default function HomeScreen() {
           // スクロール位置から現在のインデックスを計算
           indexRef.current =
             height > 0 ? Math.round(e.nativeEvent.contentOffset.y / height) : 0;
+
+          // 表示済みに追加
+          const article = articles[indexRef.current];
+
+          if (!article) return;
+
+          addViewedArticleId(article.id);
         }}
       />
       <Modal

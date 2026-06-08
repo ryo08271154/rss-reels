@@ -1,0 +1,10 @@
+RSS Scroll lets you add and manage your favorite RSS feeds, then browse articles in a stylish card-based interface or a traditional feed list.
+
+- Add any RSS feed URL
+- Home screen shows full-screen article cards
+- Feed screen shows a fast list view
+- Filter articles by category
+- Open articles in your browser
+- Supports Japanese and English
+
+Perfect for news, blogs, tech updates, and hobby sites — build your own personalized content stream.

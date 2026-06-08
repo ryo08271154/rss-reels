@@ -1,28 +1,27 @@
-# RSSReels
+# RSS Scroll
 
-RSSReelsは、ExpoとReact Nativeを使って作成されたRSSリーダーアプリです。
+RSS Scrollは、ExpoとReact Nativeを使って作成されたRSSリーダーアプリです。
 
 ## ダウンロード
 
-GitHub Releases から入手できます
-
 - **Android**
-  [ダウンロード](https://github.com/ryo08271154/rss-reels/releases)
+  - [GitHub Releases](https://github.com/ryo08271154/rss-scroll/releases)
+  - [Meta Horizon Store](https://www.meta.com/ja-jp/experiences/rss-scroll/27065469556422282)
 - **iOS**
-  現在、iOS版は公開されていません。
+  - 現在、iOS版は公開されていません。
 
 ## 概要
 
 - RSSフィードを読み込み、記事をカード表示します。
 - 好きなRSSフィードURLを追加・管理できます。
 - カテゴリー別で記事を絞り込みできます。
-- 画像付き記事をリール形式で閲覧できます。
+- 画像付き記事をカード形式で閲覧できます。
 - 日本語/英語のローカライズ対応。
 
 ## 主な機能
 
 - `Home`タブ
-  - フルスクリーンのReelカード形式で記事を表示
+  - フルスクリーンのカード形式で記事を表示
   - 画面を上下にスワイプして記事を切り替え
   - 記事タップでブラウザが開き、元記事を閲覧できます。
 

@@ -1,10 +1,15 @@
 {
   "home": "Home",
   "feed": "Feed",
+  "saved": "Saved",
   "settings": "Settings",
 
   "add": "Add",
   "remove": "Remove",
+  "articleSaved": "Article has been saved to your list.",
+  "articleRemoved": "Article has been removed from your list.",
+  "noSavedArticlesTitle": "No saved articles yet.",
+  "noSavedArticlesDescription": "Long press an article in the feed or double tap an article in the card view to save it to your list.",
   "enterValue": "Enter a value",
   "noUrls": "No URLs added yet.",
   "invalidUrl": "Invalid URL.",
@@ -21,8 +26,8 @@
   "hintSource": "Tips",
 
   "hint1Title": "How to Use",
-  "hint1Description": "RSS Reels is an app that displays the latest articles from your subscribed RSS feeds in a reel format. Tap an article to read the full content on the original website. Add RSS feed URLs in the Settings tab to customize the app to your preferences.",
-  "hint1Summary": "Welcome to RSS Reels! This app displays RSS feeds in a short and engaging reel format. Add your RSS feed URLs in the Settings tab.",
+  "hint1Description": "RSS Scroll is an app that displays the latest articles from your subscribed RSS feeds in a card format. Tap an article to read the full content on the original website. Add RSS feed URLs in the Settings tab to customize the app to your preferences.",
+  "hint1Summary": "Welcome to RSS Scroll! This app displays RSS feeds in a short and engaging card format. Add your RSS feed URLs in the Settings tab.",
 
   "hint2Title": "Feed Tab",
   "hint2Description": "In the Feed tab, you can browse the latest articles from your added RSS feeds.",
@@ -35,7 +40,13 @@
   "all": "All",
 
   "autoScroll": "Auto Scroll",
-  "autoScrollHint": "The reels will automatically scroll every 5 seconds. Long press on an article to open the settings.",
+  "autoScrollHint": "The articles will automatically advance every 5 seconds. Long press an article to open the settings.",
+
+  "noNewArticlesTitle": "No new articles",
+  "noNewArticlesMessage": "There are no new articles, so we are showing already viewed articles.",
+  "allArticlesDisplayedTitle": "All articles are displayed",
+  "allArticlesDisplayedDescription": "All articles are displayed. Please wait until new articles are added.",
+  "allArticlesDisplayedSummary": "Please wait until new articles are added.",
 
   "yes": "Yes",
   "no": "No",

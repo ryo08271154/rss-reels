@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "RSSReels",
-    "slug": "rss-reels",
-    "version": "0.2.0",
+    "name": "RSS Scroll",
+    "slug": "rss-scroll",
+    "version": "0.3.0",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
-    "scheme": "rssreels",
+    "scheme": "rssscroll",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
@@ -21,6 +21,7 @@
       },
       "predictiveBackGestureEnabled": true,
       "package": "com.ryo08271154.rssreels",
+      "versionCode": 5,
       "blockedPermissions": ["android.permission.SYSTEM_ALERT_WINDOW"]
     },
     "web": {

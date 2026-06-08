@@ -5,11 +5,13 @@ import { getRssArticles } from "@/lib/rss";
 import { Article } from "@/types/article";
 import { useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { FlatList, RefreshControl, View } from "react-native";
 
 export default function FeedScreen() {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
+  const [selectedCategory, setSelectedCategory] = useState<string>(t("all"));
 
   const [refreshing, setRefreshing] = useState(false);
   const { settings, setSettings, saveSettings, resetSettings } =

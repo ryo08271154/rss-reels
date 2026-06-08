@@ -1,7 +1,7 @@
-RSS Reels lets you add and manage your favorite RSS feeds, then browse articles in a stylish reel layout or a traditional feed list.
+RSS Scroll lets you add and manage your favorite RSS feeds, then browse articles in a stylish card-based interface or a traditional feed list.
 
 - Add any RSS feed URL
-- Home screen shows full-screen article reels
+- Home screen shows full-screen article cards
 - Feed screen shows a fast list view
 - Filter articles by category
 - Open articles in your browser

@@ -164,7 +164,7 @@ export default function SettingsScreen() {
       <Button
         title="GitHub"
         onPress={() =>
-          openBrowserAsync("https://github.com/ryo08271154/rss-reels")
+          openBrowserAsync("https://github.com/ryo08271154/rss-scroll")
         }
       />
       <Button onPress={launchNotice} title="Open source licenses" />

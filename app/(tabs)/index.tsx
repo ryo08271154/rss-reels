@@ -4,11 +4,12 @@ import { SettingsContext } from "@/context/SettingsContext";
 import { getRssArticles } from "@/lib/rss";
 import { addViewedArticleId, getViewedArticleIds } from "@/lib/viewedArticles";
 import { Article } from "@/types/article";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import { Stack, Tabs, useNavigation, useRouter } from "expo-router";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Alert,
   FlatList,
   Modal,
   Pressable,
@@ -26,7 +27,7 @@ export default function HomeScreen() {
 
   const indexRef = useRef(0);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("すべて");
+  const [selectedCategory, setSelectedCategory] = useState<string>(t("all"));
 
   const [refreshing, setRefreshing] = useState(false);
   const { settings, setSettings, saveSettings, resetSettings } =
@@ -47,7 +48,7 @@ export default function HomeScreen() {
           title: t("hint1Title"),
           description: t("hint1Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint1Summary"),
           source: t("hintSource"),
@@ -57,7 +58,7 @@ export default function HomeScreen() {
           title: t("hint2Title"),
           description: t("hint2Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint2Summary"),
           source: t("hintSource"),
@@ -67,7 +68,7 @@ export default function HomeScreen() {
           title: t("hint3Title"),
           description: t("hint3Description"),
           imageUrl: appIcon,
-          url: "https://github.com/ryo08271154/rss-reels",
+          url: "https://github.com/ryo08271154/rss-scroll",
           pubDate: "2026-05-10 15:30:00",
           summary: t("hint3Summary"),
           source: t("hintSource"),
@@ -147,6 +148,12 @@ export default function HomeScreen() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     onRefresh();
+    (async () => {
+      const savedAutoScroll = await AsyncStorage.getItem("autoScroll");
+      if (savedAutoScroll !== null) {
+        setAutoScroll(JSON.parse(savedAutoScroll));
+      }
+    })();
   }, [onRefresh]);
 
   // ホームタブで再読み込み
@@ -167,20 +174,40 @@ export default function HomeScreen() {
 
   // 自動スクロール
   useEffect(() => {
-    if (!autoScroll) return;
+    if (!autoScroll) {
+      deactivateKeepAwake();
+      return;
+    }
 
-    Alert.alert(t("autoScroll"), t("autoScrollHint"));
+    Toast.show({
+      type: "info",
+      text1: t("autoScroll"),
+      text2: t("autoScrollHint"),
+      position: "bottom",
+    });
+
+    activateKeepAwakeAsync();
     const interval = setInterval(() => {
       if (indexRef.current < articles.length - 1) {
         flatListRef.current?.scrollToIndex({
           animated: true,
           index: indexRef.current + 1,
         });
+      } else {
+        onRefresh();
       }
     }, 5000);
 
-    return () => clearInterval(interval);
-  }, [t, autoScroll, articles.length]);
+    return () => {
+      clearInterval(interval);
+      deactivateKeepAwake();
+    };
+  }, [t, autoScroll, articles.length, onRefresh]);
+
+  // 自動スクロールの状態を保存
+  useEffect(() => {
+    AsyncStorage.setItem("autoScroll", JSON.stringify(autoScroll));
+  }, [autoScroll]);
 
   return (
     <View
